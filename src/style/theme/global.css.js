@@ -6,4 +6,8 @@ export default createGlobalStyle`
     padding: 0;
     font-family: Open-Sans, Helvetica, Sans-Serif;
   }
+
+  h1 {
+    font-weight: 400;
+  }
 `;
