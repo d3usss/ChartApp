@@ -7,8 +7,17 @@ type SelectFromComponentProps = {
   labelText: string;
 };
 
+const SectionContainerStyled = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
 const SelectStyled = styled.select`
-  min-width: 250px;
+  min-width: 300px;
+  height: 40px;
+  border: 1px solid lightgray;
+  padding: 0.5rem;
 `;
 
 export const SelectFromComponent: FC<SelectFromComponentProps> = ({
@@ -16,13 +25,13 @@ export const SelectFromComponent: FC<SelectFromComponentProps> = ({
   labelText
 }: SelectFromComponentProps): JSX.Element => {
   return (
-    <>
+    <SectionContainerStyled>
       <LabelFromComponent labelText={labelText} />
       <SelectStyled>
         {selectFormValues.map((val: string, index: number) => (
           <option key={`${val}-${index}`}>{val}</option>
         ))}
       </SelectStyled>
-    </>
+    </SectionContainerStyled>
   );
 };
