@@ -11,12 +11,13 @@ type ButtonStyledProps = {
 };
 
 const ButtonStyled = styled.button<Partial<ButtonStyledProps>>`
-  height: 30px;
-  width: 50px;
-  margin: 0.5rem;
+  height: 40px;
+  min-width: 50px;
   padding: 0.5rem;
-  background-color: ${(props) => (props.isPrimary ? 'gray' : 'lightgray')};
-  cursor: ${(props) => (props.isDisabled ? 'not-allowed' : 'pointer')};
+  border: 1px solid lightgray;
+  background-color: ${({ isPrimary }) => (isPrimary ? 'gray' : 'lightgray')};
+  color: ${({ isPrimary }) => (isPrimary ? 'lightgray' : 'white')};
+  cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
 
   &::disabled {
     opacity: 0.5;
@@ -26,11 +27,12 @@ const ButtonStyled = styled.button<Partial<ButtonStyledProps>>`
 export const ButtonComponent: FC<Partial<ButtonStyledProps>> = ({
   buttonText,
   isDisabled = false,
+  isPrimary,
   onClick,
   sx
 }: Partial<ButtonStyledProps>) => {
   return (
-    <ButtonStyled disabled={isDisabled} onClick={onClick} style={sx}>
+    <ButtonStyled disabled={isDisabled} isPrimary={isPrimary} onClick={onClick} style={sx}>
       {buttonText}
     </ButtonStyled>
   );

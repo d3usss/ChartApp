@@ -4,6 +4,7 @@ import { ButtonComponent } from '../../common/sharedComponents/button/ButtonComp
 import { MultiSelectFromComponent } from '../../common/sharedComponents/multiSelectForm/MultiSelectFromComponent';
 import { SelectFromComponent } from '../../common/sharedComponents/selectForm/SelectFormComponent';
 import { translations } from '../../common/translations/en';
+import { Row } from '../../style/theme/layout.css';
 
 type FilterNavComponentProps = {
   headingText: string;
@@ -20,13 +21,6 @@ const FilterNavContainerStyled = styled.nav`
   height: 100vh;
   background-color: aliceblue;
   padding: 1rem;
-`;
-
-const Row = styled.section`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 1rem 0;
 `;
 
 const MockSelectValues = ['All', 'Google', 'Facebook'];
@@ -50,7 +44,9 @@ export const FilterNavComponent: FC<FilterNavComponentProps> = ({
 
   return (
     <FilterNavContainerStyled>
-      <h1>{headingText}</h1>
+      <Row>
+        <h1>{headingText}</h1>
+      </Row>
       <Row>
         <MultiSelectFromComponent
           labelText={filterLabelDataSource}
@@ -58,9 +54,9 @@ export const FilterNavComponent: FC<FilterNavComponentProps> = ({
           options={MockMultiselectValues}
         />
         <ButtonComponent
-          sx={{ margin: '2.5rem 1.5rem' }}
+          sx={{ alignSelf: 'flex-end', marginLeft: '1rem' }}
           buttonText={filterButton}
-          isDisabled={false} // TODO move to state
+          isPrimary
         />
       </Row>
       <Row>
