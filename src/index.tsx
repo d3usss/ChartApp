@@ -1,6 +1,8 @@
 import React from 'react';
 import { Normalize } from 'styled-normalize';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { store } from './app/store';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 import GlobalStyle from './style/theme/global.css';
@@ -10,7 +12,9 @@ ReactDOM.render(
   <React.StrictMode>
     <Normalize />
     <GlobalStyle />
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
