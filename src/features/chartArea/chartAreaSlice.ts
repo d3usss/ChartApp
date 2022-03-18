@@ -33,7 +33,7 @@ export const charAreaSlice = createSlice({
     builder
       // TODO change any for payload
       .addCase(fetchDataFromCSV.fulfilled, (state: ChartAreaState, action: PayloadAction<any>) => {
-        state.data.push(action.payload);
+        state.data.push(action.payload.data);
       })
       .addCase(fetchDataFromCSV.rejected, (state: ChartAreaState) => {
         state.data = [];

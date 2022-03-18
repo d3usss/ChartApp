@@ -1,10 +1,13 @@
 import React, { FC } from 'react';
+import _ from 'lodash';
 import styled from 'styled-components';
+import { useAppSelector } from '../../app/hooks';
 import { ButtonComponent } from '../../common/sharedComponents/button/ButtonComponent';
 import { MultiSelectFromComponent } from '../../common/sharedComponents/multiSelectForm/MultiSelectFromComponent';
 import { SelectFromComponent } from '../../common/sharedComponents/selectForm/SelectFormComponent';
 import { translations } from '../../common/translations/en';
 import { Row } from '../../style/theme/layout.css';
+import { getDataTypeUnique } from '../../common/helpers/getDataForChart';
 
 type FilterNavComponentProps = {
   headingText: string;
@@ -23,20 +26,12 @@ const FilterNavContainerStyled = styled.nav`
   padding: 1rem;
 `;
 
-const MockSelectValues = ['All', 'Google', 'Facebook'];
-const MockMultiselectValues = [
-  'metrics',
-  'doubleclicks',
-  'metrics2',
-  'doubleclicks2',
-  'metrics3',
-  'doubleclicks3'
-];
-
 export const FilterNavComponent: FC<FilterNavComponentProps> = ({
   headingText
 }: FilterNavComponentProps): JSX.Element => {
   const { filterLabelCampaign, filterLabelDataSource, filterButton } = translations;
+  const dataSources = useAppSelector((state) => getDataTypeUnique(state.chartArea.data, 1));
+  const campaigns = useAppSelector((state) => getDataTypeUnique(state.chartArea.data, 2));
 
   const onSelectDatasource = (selectedItem: string[]): void => {
     console.log(selectedItem);
@@ -51,7 +46,7 @@ export const FilterNavComponent: FC<FilterNavComponentProps> = ({
         <MultiSelectFromComponent
           labelText={filterLabelDataSource}
           onChange={onSelectDatasource}
-          options={MockMultiselectValues}
+          options={dataSources}
         />
         <ButtonComponent
           sx={{ alignSelf: 'flex-end', marginLeft: '1rem' }}
@@ -60,7 +55,7 @@ export const FilterNavComponent: FC<FilterNavComponentProps> = ({
         />
       </Row>
       <Row>
-        <SelectFromComponent labelText={filterLabelCampaign} selectFormValues={MockSelectValues} />
+        <SelectFromComponent labelText={filterLabelCampaign} selectFormValues={campaigns} />
       </Row>
     </FilterNavContainerStyled>
   );

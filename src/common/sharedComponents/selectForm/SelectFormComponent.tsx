@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { Select } from 'antd';
 import styled from 'styled-components';
 import { LabelFromComponent } from '../labelFrom/LabelFromComponent';
 
@@ -7,17 +8,12 @@ type SelectFromComponentProps = {
   labelText: string;
 };
 
+const { Option } = Select;
+
 const SectionContainerStyled = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`;
-
-const SelectStyled = styled.select`
-  min-width: 300px;
-  height: 40px;
-  border: 1px solid lightgray;
-  padding: 0.5rem;
 `;
 
 export const SelectFromComponent: FC<SelectFromComponentProps> = ({
@@ -27,11 +23,13 @@ export const SelectFromComponent: FC<SelectFromComponentProps> = ({
   return (
     <SectionContainerStyled>
       <LabelFromComponent labelText={labelText} />
-      <SelectStyled>
+      <Select showSearch placeholder={labelText} style={{ width: 300 }}>
         {selectFormValues.map((val: string, index: number) => (
-          <option key={`${val}-${index}`}>{val}</option>
+          <Option key={`$${index}-${val}`} value={val}>
+            {val}
+          </Option>
         ))}
-      </SelectStyled>
+      </Select>
     </SectionContainerStyled>
   );
 };
