@@ -1,10 +1,12 @@
-import _ from 'lodash';
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { useAppSelector } from '../../app/hooks';
-import { getDataTypeAll, getDataTypeUnique } from '../../common/helpers/getDataForChart';
 import { LineChartComponent } from '../../common/sharedComponents/lineChart/LineChartComponent';
-import { CHART_DATA } from '../../common/types/ChartDataTypes';
+import {
+  clicksAllSelector,
+  datesAllSelector,
+  impressionAllSelector
+} from '../../features/chartArea/chartAreaSlice';
 import { Row } from '../../style/theme/layout.css';
 
 type ChartAreaComponentProps = {
@@ -25,15 +27,9 @@ const ChartAreaContainerStyled = styled.section`
 export const ChartAreaComponent: FC<ChartAreaComponentProps> = ({
   headingText
 }: ChartAreaComponentProps): JSX.Element => {
-  const datesForAll = useAppSelector((state) =>
-    getDataTypeUnique(state.chartArea.data, CHART_DATA.DATE)
-  );
-  const clicksAll = useAppSelector((state) =>
-    getDataTypeAll(state.chartArea.data, CHART_DATA.CLICKS)
-  );
-  const impressionsAll = useAppSelector((state) =>
-    getDataTypeAll(state.chartArea.data, CHART_DATA.IMPRESSIONS)
-  );
+  const datesAll = useAppSelector(datesAllSelector);
+  const clicksAll = useAppSelector(clicksAllSelector);
+  const impressionAll = useAppSelector(impressionAllSelector);
 
   const options = {
     responsive: true,
@@ -65,7 +61,7 @@ export const ChartAreaComponent: FC<ChartAreaComponentProps> = ({
     }
   };
 
-  const labels = datesForAll;
+  const labels = datesAll;
 
   const data = {
     labels,
@@ -79,7 +75,7 @@ export const ChartAreaComponent: FC<ChartAreaComponentProps> = ({
       },
       {
         label: 'Impressions',
-        data: impressionsAll.map((val: string) => val),
+        data: impressionAll.map((val: string) => val),
         borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
         yAxisID: 'y1'

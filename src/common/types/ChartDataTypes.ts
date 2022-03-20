@@ -5,3 +5,5 @@ export enum CHART_DATA {
   CLICKS,
   IMPRESSIONS
 }
+
+export type DataSourcesType = ['Facebook Ads', 'Google Adwords', 'Google Analytics', 'Mailchimp'];

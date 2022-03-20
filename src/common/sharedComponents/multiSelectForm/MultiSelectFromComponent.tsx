@@ -6,7 +6,7 @@ import { LabelFromComponent } from '../labelFrom/LabelFromComponent';
 type MultiSelectFromComponentProps = {
   labelText: string;
   options: string[];
-  onChange: (selectedItems: string[]) => void;
+  onChange: (value: any[]) => void;
 };
 
 const { Option } = Select;
@@ -22,17 +22,15 @@ export const MultiSelectFromComponent: FC<MultiSelectFromComponentProps> = ({
   options,
   onChange
 }: MultiSelectFromComponentProps): JSX.Element => {
-  // const [selectedOption, setSelectedOption] = useState(null);
-
-  const handleChange = (event: any) => {
-    console.log(event);
+  const handleChange = (value: string[]) => {
+    onChange(value);
   };
 
   return (
     <MultiselectContainerStyled>
       <LabelFromComponent labelText={labelText} />
       <Select
-        mode='multiple'
+        mode='tags'
         size='large'
         placeholder='Please select'
         onChange={handleChange}

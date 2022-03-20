@@ -1,6 +1,8 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import Papa from 'papaparse';
 import type { RootState } from '../../app/store';
+import { getDataTypeAll, getDataTypeUnique } from '../../common/helpers/getDataForChart';
+import { CHART_DATA } from '../../common/types/ChartDataTypes';
 
 interface ChartAreaState {
   data: string[][];
@@ -10,13 +12,17 @@ const initialState: ChartAreaState = {
   data: []
 };
 
-export const fetchDataFromCSV = createAsyncThunk('chartArea/fetchDataFromCSV', async () => {
+export const fetchDataFromCSV = createAsyncThunk('chartArea/fetchDataFromCSV', () => {
   try {
-    const response = await fetch(
+    const response = fetch(
       'http://adverity-challenge.s3-website-eu-west-1.amazonaws.com/DAMKBAoDBwoDBAkOBAYFCw.csv'
     )
-      .then((response) => response.text())
-      .then((v) => Papa.parse(v));
+      .then((response) => {
+        return response.text();
+      })
+      .then((v) => {
+        return Papa.parse(v);
+      });
 
     return response;
   } catch (error) {
@@ -31,9 +37,8 @@ export const charAreaSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // TODO change any for payload
       .addCase(fetchDataFromCSV.fulfilled, (state: ChartAreaState, action: PayloadAction<any>) => {
-        state.data.push(action.payload.data);
+        state.data = action.payload.data;
       })
       .addCase(fetchDataFromCSV.rejected, (state: ChartAreaState) => {
         state.data = [];
@@ -43,7 +48,19 @@ export const charAreaSlice = createSlice({
 
 // export const {} = charAreaSlice.actions;
 
-// Other code such as selectors can use the imported `RootState` type
-export const selectCount = (state: RootState) => state.chartArea.data;
+export const selectAllDataFromCSV = (state: RootState) => state.chartArea.data;
+const datesForAll = createSelector([selectAllDataFromCSV], (data) =>
+  getDataTypeUnique(data, CHART_DATA.DATE)
+);
+const clicksAll = createSelector([selectAllDataFromCSV], (data) =>
+  getDataTypeAll(data, CHART_DATA.CLICKS)
+);
+const impressionsAll = createSelector([selectAllDataFromCSV], (data) =>
+  getDataTypeAll(data, CHART_DATA.IMPRESSIONS)
+);
+
+export const datesAllSelector = (state: RootState) => datesForAll(state);
+export const clicksAllSelector = (state: RootState) => clicksAll(state);
+export const impressionAllSelector = (state: RootState) => impressionsAll(state);
 
 export default charAreaSlice.reducer;

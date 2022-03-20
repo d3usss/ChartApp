@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import logger from 'redux-logger';
 import chartAreaReducer from '../features/chartArea/chartAreaSlice';
 import filterNavReducer from '../features/filterNav/filterNavSlice';
 
@@ -6,7 +7,9 @@ export const store = configureStore({
   reducer: {
     chartArea: chartAreaReducer,
     filterNav: filterNavReducer
-  }
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  devTools: process.env.NODE_ENV !== 'production'
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

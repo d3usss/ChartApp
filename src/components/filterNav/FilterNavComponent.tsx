@@ -1,13 +1,18 @@
 import React, { FC } from 'react';
-import _ from 'lodash';
 import styled from 'styled-components';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { ButtonComponent } from '../../common/sharedComponents/button/ButtonComponent';
 import { MultiSelectFromComponent } from '../../common/sharedComponents/multiSelectForm/MultiSelectFromComponent';
 import { SelectFromComponent } from '../../common/sharedComponents/selectForm/SelectFormComponent';
 import { translations } from '../../common/translations/en';
 import { Row } from '../../style/theme/layout.css';
-import { getDataTypeUnique } from '../../common/helpers/getDataForChart';
+import {
+  campaignsForDatasourcesSelector,
+  campaignsSelector,
+  SET_DATASOURCE
+} from '../../features/filterNav/filterNavSlice';
+import { dataSourcesSelector } from '../../features/filterNav/filterNavSlice';
+import _ from 'lodash';
 
 type FilterNavComponentProps = {
   headingText: string;
@@ -30,11 +35,13 @@ export const FilterNavComponent: FC<FilterNavComponentProps> = ({
   headingText
 }: FilterNavComponentProps): JSX.Element => {
   const { filterLabelCampaign, filterLabelDataSource, filterButton } = translations;
-  const dataSources = useAppSelector((state) => getDataTypeUnique(state.chartArea.data, 1));
-  const campaigns = useAppSelector((state) => getDataTypeUnique(state.chartArea.data, 2));
-
-  const onSelectDatasource = (selectedItem: string[]): void => {
-    console.log(selectedItem);
+  const dispatch = useAppDispatch();
+  const AllDatasourcesUnique = useAppSelector(dataSourcesSelector);
+  const AllCampaignsUnique = useAppSelector(campaignsSelector);
+  const campaingsForDatasources = useAppSelector(campaignsForDatasourcesSelector);
+  console.log();
+  const onSelectDatasource = (datasource: string[]): void => {
+    dispatch(SET_DATASOURCE(datasource));
   };
 
   return (
@@ -46,7 +53,7 @@ export const FilterNavComponent: FC<FilterNavComponentProps> = ({
         <MultiSelectFromComponent
           labelText={filterLabelDataSource}
           onChange={onSelectDatasource}
-          options={dataSources}
+          options={AllDatasourcesUnique}
         />
         <ButtonComponent
           sx={{ alignSelf: 'flex-end', marginLeft: '1rem' }}
@@ -55,7 +62,10 @@ export const FilterNavComponent: FC<FilterNavComponentProps> = ({
         />
       </Row>
       <Row>
-        <SelectFromComponent labelText={filterLabelCampaign} selectFormValues={campaigns} />
+        <SelectFromComponent
+          labelText={filterLabelCampaign}
+          selectFormValues={campaingsForDatasources}
+        />
       </Row>
     </FilterNavContainerStyled>
   );

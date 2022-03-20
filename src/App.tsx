@@ -18,7 +18,6 @@ const App: FC = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(fetchDataFromCSV());
-    console.log('test');
   }, []);
 
   return (
