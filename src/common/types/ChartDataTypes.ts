@@ -7,3 +7,4 @@ export enum CHART_DATA {
 }
 
 export type DataSourcesType = ['Facebook Ads', 'Google Adwords', 'Google Analytics', 'Mailchimp'];
+export type CampaignsReturnedType = { date: string[]; clicks: string[]; impressions: string[] };

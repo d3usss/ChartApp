@@ -10,7 +10,6 @@ type SelectFromComponentProps = {
 };
 
 const { Option } = Select;
-
 const SectionContainerStyled = styled.section`
   display: flex;
   flex-direction: column;
@@ -22,10 +21,15 @@ export const SelectFromComponent: FC<SelectFromComponentProps> = ({
   labelText,
   handleChange
 }: SelectFromComponentProps): JSX.Element => {
+  const onChange = (value: string) => {
+    console.log(value);
+    handleChange(value);
+  };
+
   return (
     <SectionContainerStyled>
       <LabelFromComponent labelText={labelText} />
-      <Select showSearch placeholder={labelText} style={{ width: 300 }} onChange={handleChange}>
+      <Select showSearch placeholder={labelText} style={{ width: 300 }} onChange={onChange}>
         {selectFormValues.map((val: string, index: number) => (
           <Option key={`$${index}-${val}`} value={val}>
             {val}

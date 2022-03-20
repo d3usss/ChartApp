@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { CHART_DATA, DataSourcesType } from '../types/ChartDataTypes';
+import { CampaignsReturnedType, CHART_DATA } from '../types/ChartDataTypes';
 
 export const getDataTypeUnique = (dataForChart: string[][], type: CHART_DATA): string[] => {
   return !_.isEmpty(dataForChart)
@@ -27,4 +27,31 @@ export const getDataForDataSource = (
   return _.uniq(filteredData.map((data) => data[returnedType]));
 };
 
-// export const SumCampaigns = () => {};
+export const getDataForCampaigns = (
+  dataFromCSV: string[][],
+  campaigns: string
+): null | CampaignsReturnedType => {
+  if (_.isEmpty(dataFromCSV) && !campaigns) return null;
+
+  const allDataForCampaigns = dataFromCSV.filter(
+    (allData: string[]) => allData[CHART_DATA.CAMPAIGNS] === campaigns
+  );
+
+  const getDate = allDataForCampaigns.map(
+    (campaignsData: string[]) => campaignsData[CHART_DATA.DATE]
+  );
+
+  const getClicks = allDataForCampaigns.map(
+    (campaignsData: string[]) => campaignsData[CHART_DATA.CLICKS]
+  );
+
+  const getImpressions = allDataForCampaigns.map(
+    (campaignsData: string[]) => campaignsData[CHART_DATA.IMPRESSIONS]
+  );
+
+  return {
+    date: getDate,
+    clicks: getClicks,
+    impressions: getImpressions
+  };
+};

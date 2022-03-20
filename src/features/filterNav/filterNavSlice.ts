@@ -2,7 +2,6 @@ import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import type { RootState } from '../../app/store';
 import { getDataForDataSource, getDataTypeUnique } from '../../common/helpers/getDataForChart';
 import { CHART_DATA } from '../../common/types/ChartDataTypes';
-import { selectAllDataFromCSV } from '../chartArea/chartAreaSlice';
 
 interface FilterNavState {
   campaignsForChar: string[];
@@ -32,10 +31,11 @@ export const filterNavSlice = createSlice({
   }
 });
 
+const selectAllDataFromCSV = (state: RootState) => state.chartArea.data;
 export const { SET_DATASOURCE, SET_CAMPAIGNS, GET_CAMPAIGNS } = filterNavSlice.actions;
-
 // Other code such as selectors can use the imported `RootState` type
 export const selectDatasources = (state: RootState) => state.filterNav.datasourceValue;
+export const selectCampings = (state: RootState) => state.filterNav.campaignsValue;
 
 const dataSources = createSelector([selectAllDataFromCSV], (data) =>
   getDataTypeUnique(data, CHART_DATA.DATASOURCE)

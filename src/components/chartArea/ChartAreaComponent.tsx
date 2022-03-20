@@ -2,8 +2,10 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { useAppSelector } from '../../app/hooks';
 import { LineChartComponent } from '../../common/sharedComponents/lineChart/LineChartComponent';
+import { CampaignsReturnedType } from '../../common/types/ChartDataTypes';
 import {
   clicksAllSelector,
+  dataForCampaignsSelector,
   datesAllSelector,
   impressionAllSelector
 } from '../../features/chartArea/chartAreaSlice';
@@ -30,6 +32,7 @@ export const ChartAreaComponent: FC<ChartAreaComponentProps> = ({
   const datesAll = useAppSelector(datesAllSelector);
   const clicksAll = useAppSelector(clicksAllSelector);
   const impressionAll = useAppSelector(impressionAllSelector);
+  const dataForCampaing: null | CampaignsReturnedType = useAppSelector(dataForCampaignsSelector);
 
   const options = {
     responsive: true,
@@ -61,21 +64,21 @@ export const ChartAreaComponent: FC<ChartAreaComponentProps> = ({
     }
   };
 
-  const labels = datesAll;
+  const labels = dataForCampaing ? dataForCampaing.date : [];
 
   const data = {
     labels,
     datasets: [
       {
         label: 'Clicks',
-        data: clicksAll.map((val: string) => val),
+        data: dataForCampaing ? dataForCampaing.clicks.map((values: string) => values) : [],
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         yAxisID: 'y'
       },
       {
         label: 'Impressions',
-        data: impressionAll.map((val: string) => val),
+        data: dataForCampaing ? dataForCampaing.impressions.map((values: string) => values) : [],
         borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
         yAxisID: 'y1'

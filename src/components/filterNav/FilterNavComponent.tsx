@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { ButtonComponent } from '../../common/sharedComponents/button/ButtonComponent';
+// import { ButtonComponent } from '../../common/sharedComponents/button/ButtonComponent';
 import { MultiSelectFromComponent } from '../../common/sharedComponents/multiSelectForm/MultiSelectFromComponent';
 import { SelectFromComponent } from '../../common/sharedComponents/selectForm/SelectFormComponent';
 import { translations } from '../../common/translations/en';
@@ -33,12 +33,12 @@ const FilterNavContainerStyled = styled.nav`
 export const FilterNavComponent: FC<FilterNavComponentProps> = ({
   headingText
 }: FilterNavComponentProps): JSX.Element => {
-  const { filterLabelCampaign, filterLabelDataSource, filterButton } = translations;
+  const { filterLabelCampaign, filterLabelDataSource } = translations;
   const dispatch = useAppDispatch();
   const AllDatasourcesUnique = useAppSelector(dataSourcesSelector);
   // const AllCampaignsUnique = useAppSelector(campaignsSelector);
   const campaignsForDatasources = useAppSelector(campaignsForDatasourcesSelector);
-  console.log();
+
   const onSelectDatasource = (datasource: string[]): void => {
     dispatch(SET_DATASOURCE(datasource));
   };
@@ -58,11 +58,12 @@ export const FilterNavComponent: FC<FilterNavComponentProps> = ({
           onChange={onSelectDatasource}
           options={AllDatasourcesUnique}
         />
-        <ButtonComponent
+        {/* TODO: Add event for button and proper logic :)
+         <ButtonComponent
           sx={{ alignSelf: 'flex-end', marginLeft: '1rem' }}
           buttonText={filterButton}
           isPrimary
-        />
+        /> */}
       </Row>
       <Row>
         <SelectFromComponent
