@@ -20,7 +20,7 @@ export type ChartProps = {
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const LineChartStyled = styled(Line)`
-  width: fit-content;
+  width: 100%;
 `;
 
 export const LineChartComponent: FC<ChartProps> = ({ options, data }: ChartProps): JSX.Element => {

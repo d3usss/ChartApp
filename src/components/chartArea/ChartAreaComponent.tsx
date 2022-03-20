@@ -2,14 +2,17 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { useAppSelector } from '../../app/hooks';
 import { LineChartComponent } from '../../common/sharedComponents/lineChart/LineChartComponent';
-import { CampaignsReturnedType } from '../../common/types/ChartDataTypes';
 import {
   clicksAllSelector,
   dataForCampaignsSelector,
   datesAllSelector,
   impressionAllSelector
 } from '../../features/chartArea/chartAreaSlice';
+import { selectCampings, selectDatasources } from '../../features/filterNav/filterNavSlice';
 import { Row } from '../../style/theme/layout.css';
+import { translations } from '../../common/translations/en';
+import { dataForChart, optionsForChart } from '../../common/helpers/dataForCharts';
+import _ from 'lodash';
 
 type ChartAreaComponentProps = {
   headingText: string;
@@ -32,67 +35,27 @@ export const ChartAreaComponent: FC<ChartAreaComponentProps> = ({
   const datesAll = useAppSelector(datesAllSelector);
   const clicksAll = useAppSelector(clicksAllSelector);
   const impressionAll = useAppSelector(impressionAllSelector);
-  const dataForCampaing: null | CampaignsReturnedType = useAppSelector(dataForCampaignsSelector);
+  const getCampaingName = useAppSelector(selectCampings);
+  const getDatasources = useAppSelector(selectDatasources);
+  const dataForCampaing = useAppSelector(dataForCampaignsSelector);
+  const { chartAreaPlaceholder } = translations;
+  const campaingText = getCampaingName && getDatasources.length ? getCampaingName : '';
+  const isAllCampaing = getCampaingName === 'All';
+  const shouldShowChart = (!_.isEmpty(getDatasources) && getCampaingName.length) || isAllCampaing;
 
-  const options = {
-    responsive: true,
-    interaction: {
-      mode: 'index' as const,
-      intersect: false
-    },
-    stacked: false,
-    plugins: {
-      title: {
-        display: true,
-        text: 'Chart.js Line Chart - Multi Axis'
-      }
-    },
-    scales: {
-      y: {
-        type: 'linear' as const,
-        display: true,
-        position: 'left' as const
-      },
-      y1: {
-        type: 'linear' as const,
-        display: true,
-        position: 'right' as const,
-        grid: {
-          drawOnChartArea: false
-        }
-      }
-    }
-  };
-
-  const labels = dataForCampaing ? dataForCampaing.date : [];
-
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: 'Clicks',
-        data: dataForCampaing ? dataForCampaing.clicks.map((values: string) => values) : [],
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        yAxisID: 'y'
-      },
-      {
-        label: 'Impressions',
-        data: dataForCampaing ? dataForCampaing.impressions.map((values: string) => values) : [],
-        borderColor: 'rgb(53, 162, 235)',
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        yAxisID: 'y1'
-      }
-    ]
-  };
+  const data = dataForChart(isAllCampaing, dataForCampaing, clicksAll, datesAll, impressionAll);
 
   return (
     <ChartAreaContainerStyled>
       <Row>
-        <h1>{headingText}</h1>
+        <h1>{`${headingText} ${campaingText}`}</h1>
       </Row>
       <Row>
-        <LineChartComponent options={options} data={data} />
+        {shouldShowChart ? (
+          <LineChartComponent options={optionsForChart} data={data} />
+        ) : (
+          <p>{chartAreaPlaceholder}</p>
+        )}
       </Row>
     </ChartAreaContainerStyled>
   );

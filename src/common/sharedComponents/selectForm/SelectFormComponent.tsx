@@ -22,19 +22,23 @@ export const SelectFromComponent: FC<SelectFromComponentProps> = ({
   handleChange
 }: SelectFromComponentProps): JSX.Element => {
   const onChange = (value: string) => {
-    console.log(value);
     handleChange(value);
   };
 
   return (
     <SectionContainerStyled>
       <LabelFromComponent labelText={labelText} />
-      <Select showSearch placeholder={labelText} style={{ width: 300 }} onChange={onChange}>
-        {selectFormValues.map((val: string, index: number) => (
-          <Option key={`$${index}-${val}`} value={val}>
-            {val}
-          </Option>
-        ))}
+      <Select showSearch style={{ width: 300 }} onChange={onChange} placeholder='Please select'>
+        {selectFormValues.length ? (
+          <>
+            <Option value='All'>All</Option>
+            {selectFormValues.map((val: string, index: number) => (
+              <Option key={`$${index}-${val}`} value={val}>
+                {val}
+              </Option>
+            ))}
+          </>
+        ) : null}
       </Select>
     </SectionContainerStyled>
   );

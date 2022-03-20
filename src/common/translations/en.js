@@ -3,5 +3,6 @@ export const translations = {
   filterLabelCampaign: 'Campaing',
   filterLabelDataSource: 'Datasource',
   filterButton: 'Apply',
-  chartAreaHeading: 'Datasource "Doubleclick(dfa)" and "Meetrics"; All Campaigns'
+  chartAreaHeading: 'Datasource "Doubleclick(dfa)" and "Meetrics"; ',
+  chartAreaPlaceholder: 'Please Chose source and campaigns'
 };

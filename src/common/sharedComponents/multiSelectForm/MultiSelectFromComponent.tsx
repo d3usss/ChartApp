@@ -6,7 +6,7 @@ import { LabelFromComponent } from '../labelFrom/LabelFromComponent';
 type MultiSelectFromComponentProps = {
   labelText: string;
   options: string[];
-  onChange: (value: any[]) => void;
+  onChange: (value: string[]) => void;
 };
 
 const { Option } = Select;

@@ -35,8 +35,7 @@ export const FilterNavComponent: FC<FilterNavComponentProps> = ({
 }: FilterNavComponentProps): JSX.Element => {
   const { filterLabelCampaign, filterLabelDataSource } = translations;
   const dispatch = useAppDispatch();
-  const AllDatasourcesUnique = useAppSelector(dataSourcesSelector);
-  // const AllCampaignsUnique = useAppSelector(campaignsSelector);
+  const allDatasourcesUnique = useAppSelector(dataSourcesSelector);
   const campaignsForDatasources = useAppSelector(campaignsForDatasourcesSelector);
 
   const onSelectDatasource = (datasource: string[]): void => {
@@ -56,7 +55,7 @@ export const FilterNavComponent: FC<FilterNavComponentProps> = ({
         <MultiSelectFromComponent
           labelText={filterLabelDataSource}
           onChange={onSelectDatasource}
-          options={AllDatasourcesUnique}
+          options={allDatasourcesUnique}
         />
         {/* TODO: Add event for button and proper logic :)
          <ButtonComponent
@@ -66,6 +65,8 @@ export const FilterNavComponent: FC<FilterNavComponentProps> = ({
         /> */}
       </Row>
       <Row>
+        {/* this select have bug it's not clear value when passing empty array,
+        I lost some time to fix and I am aware of it */}
         <SelectFromComponent
           labelText={filterLabelCampaign}
           selectFormValues={campaignsForDatasources}
