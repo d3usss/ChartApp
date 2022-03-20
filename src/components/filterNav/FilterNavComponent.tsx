@@ -8,11 +8,10 @@ import { translations } from '../../common/translations/en';
 import { Row } from '../../style/theme/layout.css';
 import {
   campaignsForDatasourcesSelector,
-  campaignsSelector,
+  GET_CAMPAIGNS,
   SET_DATASOURCE
 } from '../../features/filterNav/filterNavSlice';
 import { dataSourcesSelector } from '../../features/filterNav/filterNavSlice';
-import _ from 'lodash';
 
 type FilterNavComponentProps = {
   headingText: string;
@@ -37,11 +36,15 @@ export const FilterNavComponent: FC<FilterNavComponentProps> = ({
   const { filterLabelCampaign, filterLabelDataSource, filterButton } = translations;
   const dispatch = useAppDispatch();
   const AllDatasourcesUnique = useAppSelector(dataSourcesSelector);
-  const AllCampaignsUnique = useAppSelector(campaignsSelector);
-  const campaingsForDatasources = useAppSelector(campaignsForDatasourcesSelector);
+  // const AllCampaignsUnique = useAppSelector(campaignsSelector);
+  const campaignsForDatasources = useAppSelector(campaignsForDatasourcesSelector);
   console.log();
   const onSelectDatasource = (datasource: string[]): void => {
     dispatch(SET_DATASOURCE(datasource));
+  };
+
+  const onSelectCampaigns = (value: string) => {
+    dispatch(GET_CAMPAIGNS(value));
   };
 
   return (
@@ -64,7 +67,8 @@ export const FilterNavComponent: FC<FilterNavComponentProps> = ({
       <Row>
         <SelectFromComponent
           labelText={filterLabelCampaign}
-          selectFormValues={campaingsForDatasources}
+          selectFormValues={campaignsForDatasources}
+          handleChange={onSelectCampaigns}
         />
       </Row>
     </FilterNavContainerStyled>

@@ -6,6 +6,7 @@ import { LabelFromComponent } from '../labelFrom/LabelFromComponent';
 type SelectFromComponentProps = {
   selectFormValues: string[];
   labelText: string;
+  handleChange: (value: string) => void;
 };
 
 const { Option } = Select;
@@ -18,12 +19,13 @@ const SectionContainerStyled = styled.section`
 
 export const SelectFromComponent: FC<SelectFromComponentProps> = ({
   selectFormValues,
-  labelText
+  labelText,
+  handleChange
 }: SelectFromComponentProps): JSX.Element => {
   return (
     <SectionContainerStyled>
       <LabelFromComponent labelText={labelText} />
-      <Select showSearch placeholder={labelText} style={{ width: 300 }}>
+      <Select showSearch placeholder={labelText} style={{ width: 300 }} onChange={handleChange}>
         {selectFormValues.map((val: string, index: number) => (
           <Option key={`$${index}-${val}`} value={val}>
             {val}

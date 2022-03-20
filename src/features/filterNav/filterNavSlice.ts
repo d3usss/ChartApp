@@ -1,17 +1,19 @@
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import type { RootState } from '../../app/store';
 import { getDataForDataSource, getDataTypeUnique } from '../../common/helpers/getDataForChart';
-import { CHART_DATA, DataSourcesType } from '../../common/types/ChartDataTypes';
+import { CHART_DATA } from '../../common/types/ChartDataTypes';
 import { selectAllDataFromCSV } from '../chartArea/chartAreaSlice';
 
 interface FilterNavState {
-  datasourceForChart: string[];
   campaignsForChar: string[];
+  datasourceValue: string[];
+  campaignsValue: string;
 }
 
 const initialState: FilterNavState = {
-  datasourceForChart: [],
-  campaignsForChar: []
+  campaignsForChar: [],
+  datasourceValue: [],
+  campaignsValue: ''
 };
 
 export const filterNavSlice = createSlice({
@@ -19,18 +21,21 @@ export const filterNavSlice = createSlice({
   initialState,
   reducers: {
     SET_DATASOURCE: (state, action: PayloadAction<string[]>) => {
-      state.datasourceForChart = action.payload;
+      state.datasourceValue = action.payload;
     },
     SET_CAMPAIGNS: (state, action: PayloadAction<string[]>) => {
       state.campaignsForChar = action.payload;
+    },
+    GET_CAMPAIGNS: (state, action: PayloadAction<string>) => {
+      state.campaignsValue = action.payload;
     }
   }
 });
 
-export const { SET_DATASOURCE, SET_CAMPAIGNS } = filterNavSlice.actions;
+export const { SET_DATASOURCE, SET_CAMPAIGNS, GET_CAMPAIGNS } = filterNavSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectDatasources = (state: RootState) => state.filterNav.datasourceForChart;
+export const selectDatasources = (state: RootState) => state.filterNav.datasourceValue;
 
 const dataSources = createSelector([selectAllDataFromCSV], (data) =>
   getDataTypeUnique(data, CHART_DATA.DATASOURCE)
@@ -38,11 +43,6 @@ const dataSources = createSelector([selectAllDataFromCSV], (data) =>
 const campaigns = createSelector([selectAllDataFromCSV], (data) =>
   getDataTypeUnique(data, CHART_DATA.CAMPAIGNS)
 );
-
-// const dataForDataSource = createSelector(
-//   [selectAllDataFromCSV, selectDatasources],
-//   (allData, datasources) => getDataForDataSource(allData, CHART_DATA.DATASOURCE, datasources)
-// );
 
 const campaignsForDataSource = createSelector(
   [selectAllDataFromCSV, selectDatasources],
