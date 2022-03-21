@@ -51,8 +51,7 @@ export const charAreaSlice = createSlice({
   }
 });
 
-// export const {} = charAreaSlice.actions;
-const selectAllDataFromCSV = (state: RootState) => state.chartArea.data;
+export const selectAllDataFromCSV = (state: RootState) => state.chartArea.data;
 
 const dataForCampaigns = createSelector([selectAllDataFromCSV, selectCampings], (data, campaigns) =>
   getDataForCampaigns(data, campaigns)

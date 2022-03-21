@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import { FilterNavComponent } from './components/filterNav/FilterNavComponent';
 import { ChartAreaComponent } from './components/chartArea/ChartAreaComponent';
 import { translations } from './common/translations/en';
-import { useAppDispatch } from './app/hooks';
-import { fetchDataFromCSV } from './features/chartArea/chartAreaSlice';
+import { useAppSelector } from './app/hooks';
+import { fetchDataFromCSV, selectAllDataFromCSV } from './features/chartArea/chartAreaSlice';
+import _ from 'lodash';
+import { useDispatch } from 'react-redux';
 
 const AppContainerStyled = styled.main`
   display: grid;
@@ -14,10 +16,14 @@ const AppContainerStyled = styled.main`
 
 const App: FC = (): JSX.Element => {
   const { chartAreaHeading, filterHeading } = translations;
-  const dispatch = useAppDispatch();
+  const chartData = useAppSelector(selectAllDataFromCSV);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchDataFromCSV());
+    if (_.isEmpty(chartData)) {
+      dispatch(fetchDataFromCSV());
+    }
+    return;
   }, []);
 
   return (
